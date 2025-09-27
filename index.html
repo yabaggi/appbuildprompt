@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF!exp-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Website Prompt Builder Complete</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f9f9f9;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .tabs {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    background: #ddd;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .tab.active {
+    background: #2b8a3e;
+    color: white;
+  }
+  .tab-content {
+    background: white;
+    padding: 15px;
+    border-radius: 0 8px 8px 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    display: none;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  .component {
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .component label {
+    font-weight: bold;
+  }
+  select, input[type=checkbox] {
+    margin-left: 10px;
+  }
+  .type-select {
+    margin-top: 6px;
+    margin-left: 24px;
+    min-width: 230px;
+  }
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: #2b8a3e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) {
+    background-color: #246b31;
+  }
+  button:disabled {
+    background-color: #888;
+    cursor: default;
+  }
+  #result {
+    margin-top: 20px;
+    white-space: pre-wrap;
+    background: #e9f1e9;
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 160px;
+    font-family: monospace;
+    position: relative;
+  }
+  #copyMessage {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  #copyMessage.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Added Header, Nav, Hero styles */
+  header {
+    margin-bottom: 30px;
+  }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(43, 138, 62, 0.9);
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+  }
+  .navbar .logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+  nav {
+    position: relative;
+  }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+  }
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  nav ul li a:hover {
+    color: #cde8cd;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+  }
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      position: absolute;
+      top: 48px;
+      right: 0;
+      background: rgba(43, 138, 62, 0.95);
+      border-radius: 0 0 0 8px;
+      width: 180px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      z-index: 10;
+    }
+    nav ul.show {
+      max-height: 300px;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+  .hero {
+    height: 150px;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    margin-bottom: 30px;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="navbar" role="banner">
+    <div class="logo" aria-label="Website logo">MySite</div>
+    <nav role="navigation" aria-label="Primary navigation">
+      <ul id="nav-links">
+        <li><a href="#home" tabindex="0">Home</a></li>
+        <li><a href="#about" tabindex="0">About</a></li>
+        <li><a href="#services" tabindex="0">Services</a></li>
+        <li><a href="#contact" tabindex="0">Contact</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+        <div></div>
+        <div></div>
+        <div></div>
+      </button>
+    </nav>
+  </div>
+  <section class="hero" role="img" aria-label="Hero image section">
+    <h1>Welcome to MySite</h1>
+  </section>
+</header>
+
+<h1>Website Prompt Builder</h1>
+
+<div class="tabs" role="tablist" aria-label="Component categories">
+  <div class="tab active" role="tab" tabindex="0" aria-selected="true" aria-controls="general" id="tab-general">General App/Webpage Setup</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="basic" id="tab-basic">Basic Components</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="advanced" id="tab-advanced">Advanced Features</div>
+</div>
+
+<!-- General App/Webpage Setup Tab -->
+<div id="general" class="tab-content active" role="tabpanel" aria-labelledby="tab-general">
+  <form id="generalForm" autocomplete="off">
+    <!-- Selected Item Display -->
+    <div id="selectedItem" class="component" style="display: none; background-color: #e8f5e8; border: 2px solid #2b8a3e;">
+      <label style="color: #2b8a3e; font-weight: bold;">Last Selected:</label>
+      <input type="text" id="selectedItemInput" readonly style="margin-top: 6px; margin-left: 24px; width: calc(100% - 32px); padding: 8px; border: 1px solid #ccc; border-radius: 4px; background-color: white; font-size: 1rem;" placeholder="No selection made yet">
+    </div>
+
+    <!-- Personal Use -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Personal Use" /> 🔹 Personal Use</label>
+      <select class="type-select" data-component="Personal Use" disabled aria-label="Select Personal Use type">
+        <option value="">Choose type</option>
+        <option>Personal portfolio website</option>
+        <option>Resume/CV website with downloadable PDF</option>
+        <option>Personal blog with newsletter signup</option>
+        <option>Artist/photographer portfolio with galleries</option>
+        <option>Wedding or invitation website with RSVP form</option>
+      </select>
+    </div>
+
+    <!-- Business & Professional -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Business & Professional" /> 🔹 Business & Professional</label>
+      <select class="type-select" data-component="Business & Professional" disabled aria-label="Select Business & Professional type">
+        <option value="">Choose type</option>
+        <option>Company profile website with about us, services, and contact page</option>
+        <option>Landing page for a business/product</option>
+        <option>SaaS product landing page with signup and pricing plans</option>
+        <option>Consulting or freelancer services website</option>
+        <option>Medical clinic website with doctor profiles and appointment booking</option>
+        <option>Fitness/gym website with classes and membership plans</option>
+        <option>Real estate listings website with property search</option>
+        <option>Restaurant website with menu, online ordering, and reservations</option>
+        <option>Travel or tourism website with guides, places, and booking</option>
+        <option>Job board website with postings and applications</option>
+      </select>
+    </div>
+
+    <!-- Commerce & Online Stores -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Commerce & Online Stores" /> 🔹 Commerce & Online Stores</label>
+      <select class="type-select" data-component="Commerce & Online Stores" disabled aria-label="Select Commerce & Online Stores type">
+        <option value="">Choose type</option>
+        <option>E-commerce store with product listings and checkout</option>
+        <option>Marketplace website where users can post and sell items</option>
+        <option>Portfolio + shop site for digital downloads</option>
+        <option>Travel booking website (flights, hotels, packages)</option>
+      </select>
+    </div>
+
+    <!-- Events & Communities -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Events & Communities" /> 🔹 Events & Communities</label>
+      <select class="type-select" data-component="Events & Communities" disabled aria-label="Select Events & Communities type">
+        <option value="">Choose type</option>
+        <option>Simple event website with schedule, speakers, and registration</option>
+        <option>Non-profit or charity website with donation option</option>
+        <option>Church/mosque/temple website with events and sermons</option>
+        <option>Forum or community discussion site</option>
+        <option>Sports team website with schedules, news, and results</option>
+      </select>
+    </div>
+
+    <!-- Media & Content -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Media & Content" /> 🔹 Media & Content</label>
+      <select class="type-select" data-component="Media & Content" disabled aria-label="Select Media & Content type">
+        <option value="">Choose type</option>
+        <option>Blog website with categories and posts</option>
+        <option>News or magazine-style website</option>
+        <option>Podcast website with episode list and audio player</option>
+        <option>Music band or DJ website with tracks and tour dates</option>
+        <option>School/university website with courses and admissions info</option>
+      </select>
+    </div>
+
+  </form>
+</div>
+
+<!-- Basic Components Tab -->
+<div id="basic" class="tab-content" role="tabpanel" aria-labelledby="tab-basic">
+  <form id="basicForm" autocomplete="off">
+    <!-- Header -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Header" /> Header</label>
+      <select class="type-select" data-component="Header" disabled aria-label="Select Header type">
+        <option value="">Choose type</option>
+        <option>Classic</option>
+        <option>Magazine-style</option>
+        <option>Hero header</option>
+        <option>Sticky/fixed</option>
+        <option>Transparent</option>
+        <option>Full-screen</option>
+        <option>Hidden</option>
+        <option>Mega menu</option>
+        <option>Mobile-friendly</option>
+        <option>Vertical</option>
+      </select>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Navigation Bar" /> Navigation Bar</label>
+      <select class="type-select" data-component="Navigation Bar" disabled aria-label="Select Navigation Bar type">
+        <option value="">Choose type</option>
+        <option>Horizontal menu</option>
+        <option>Vertical sidebar menu</option>
+        <option>Dropdown menus</option>
+        <option>Mega menus</option>
+        <option>Hamburger menus</option>
+        <option>Sticky navigation</option>
+      </select>
+    </div>
+
+    <!-- Footer -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Footer" /> Footer</label>
+      <select class="type-select" data-component="Footer" disabled aria-label="Select Footer type">
+        <option value="">Choose type</option>
+        <option>Simple text footer</option>
+        <option>Multi-column with menus</option>
+        <option>Sticky footer</option>
+        <option>Sitemap footer</option>
+        <option>Extended footer with widgets</option>
+      </select>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Hero Section" /> Hero Section</label>
+      <select class="type-select" data-component="Hero Section" disabled aria-label="Select Hero Section type">
+        <option value="">Choose type</option>
+        <option>Static image</option>
+        <option>Video background</option>
+        <option>Carousel slider</option>
+        <option>Animated or interactive hero</option>
+        <option>Fullscreen hero</option>
+      </select>
+    </div>
+
+    <!-- Content Area -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Content Area" /> Content Area</label>
+      <select class="type-select" data-component="Content Area" disabled aria-label="Select Content Area type">
+        <option value="">Choose type</option>
+        <option>Single column</option>
+        <option>Multi-column layouts</option>
+        <option>Grid layouts</option>
+        <option>Masonry layouts</option>
+      </select>
+    </div>
+
+    <!-- Slider -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Slider" /> Slider</label>
+      <select class="type-select" data-component="Slider" disabled aria-label="Select Slider type">
+        <option value="">Choose type</option>
+        <option>Image slider</option>
+        <option>Content slider</option>
+        <option>Fullwidth slider</option>
+        <option>Thumbnail navigation slider</option>
+      </select>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Breadcrumbs" /> Breadcrumbs</label>
+      <select class="type-select" data-component="Breadcrumbs" disabled aria-label="Select Breadcrumbs type">
+        <option value="">Choose type</option>
+        <option>Text breadcrumb trail</option>
+        <option>Icon-based breadcrumbs</option>
+        <option>Dynamic breadcrumbs</option>
+      </select>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Call to Action (CTA)" /> Call to Action (CTA)</label>
+      <select class="type-select" data-component="Call to Action (CTA)" disabled aria-label="Select CTA type">
+        <option value="">Choose type</option>
+        <option>Buttons</option>
+        <option>Banners</option>
+        <option>Popups/Modals</option>
+        <option>Inline text links</option>
+      </select>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Sidebar" /> Sidebar</label>
+      <select class="type-select" data-component="Sidebar" disabled aria-label="Select Sidebar type">
+        <option value="">Choose type</option>
+        <option>Static sidebar</option>
+        <option>Sticky or floating sidebar</option>
+        <option>Collapsible sidebar</option>
+      </select>
+    </div>
+
+    <!-- Logo -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Logo" /> Logo</label>
+      <select class="type-select" data-component="Logo" disabled aria-label="Select Logo type">
+        <option value="">Choose type</option>
+        <option>Text-logo</option>
+        <option>Image-logo</option>
+        <option>Combination logo (image + text)</option>
+      </select>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Search Bar" /> Search Bar</label>
+      <select class="type-select" data-component="Search Bar" disabled aria-label="Select Search Bar type">
+        <option value="">Choose type</option>
+        <option>Standard input with button</option>
+        <option>Autocomplete suggestion</option>
+        <option>Filtered search</option>
+      </select>
+    </div>
+
+    <!-- Forms -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Forms" /> Forms</label>
+      <select class="type-select" data-component="Forms" disabled aria-label="Select Forms type">
+        <option value="">Choose type</option>
+        <option>Contact form</option>
+        <option>Membership registration</option>
+        <option>Feedback or survey</option>
+        <option>Subscription form</option>
+      </select>
+    </div>
+
+    <!-- Blog Section -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Blog Section" /> Blog Section</label>
+      <select class="type-select" data-component="Blog Section" disabled aria-label="Select Blog Section type">
+        <option value="">Choose type</option>
+        <option>List view</option>
+        <option>Grid view</option>
+        <option>Single post view</option>
+      </select>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Social Media Links" /> Social Media Links</label>
+      <select class="type-select" data-component="Social Media Links" disabled aria-label="Select Social Media Links type">
+        <option value="">Choose type</option>
+        <option>Icon links</option>
+        <option>Embedded social feeds</option>
+      </select>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Testimonials" /> Testimonials</label>
+      <select class="type-select" data-component="Testimonials" disabled aria-label="Select Testimonials type">
+        <option value="">Choose type</option>
+        <option>Text testimonials</option>
+        <option>Video testimonials</option>
+        <option>Carousel of testimonials</option>
+      </select>
+    </div>
+
+    <!-- Sitemap -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Sitemap" /> Sitemap</label>
+      <select class="type-select" data-component="Sitemap" disabled aria-label="Select Sitemap type">
+        <option value="">Choose type</option>
+        <option>HTML link sitemap</option>
+        <option>XML sitemap for search engines</option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<!-- Advanced Features Tab -->
+<div id="advanced" class="tab-content" role="tabpanel" aria-labelledby="tab-advanced">
+  <form id="advancedForm" autocomplete="off">
+
+    <!-- Notification/Alert Bar -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Notification/Alert Bar" /> Notification/Alert Bar</label>
+      <select class="type-select" data-component="Notification/Alert Bar" disabled aria-label="Select Notification/Alert Bar type">
+        <option value="">Choose type</option>
+        <option>Static banner</option>
+        <option>Dismissible alert</option>
+        <option>Animated scrolling ticker</option>
+        <option>Sticky notification bar</option>
+      </select>
+    </div>
+
+    <!-- Loading/Preloader Screen -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Loading/Preloader Screen" /> Loading/Preloader Screen</label>
+      <select class="type-select" data-component="Loading/Preloader Screen" disabled aria-label="Select Loading/Preloader Screen type">
+        <option value="">Choose type</option>
+        <option>Spinner/progress bar</option>
+        <option>Animated logo or graphic</option>
+        <option>Skeleton screens</option>
+      </select>
+    </div>
+
+    <!-- Modal/Popup Windows -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Modal/Popup Windows" /> Modal/Popup Windows</label>
+      <select class="type-select" data-component="Modal/Popup Windows" disabled aria-label="Select Modal/Popup Windows type">
+        <option value="">Choose type</option>
+        <option>Entry popups</option>
+        <option>Exit intent popups</option>
+        <option>Lightboxes</option>
+        <option>Form modals</option>
+      </select>
+    </div>
+
+    <!-- Chatbot/Live Chat Interface -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Chatbot/Live Chat Interface" /> Chatbot/Live Chat Interface</label>
+      <select class="type-select" data-component="Chatbot/Live Chat Interface" disabled aria-label="Select Chatbot/Live Chat Interface type">
+        <option value="">Choose type</option>
+        <option>Rule-based chatbots</option>
+        <option>AI-powered conversational bots</option>
+        <option>Live agent chat</option>
+      </select>
+    </div>
+
+    <!-- Feature/Product Cards -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Feature/Product Cards" /> Feature/Product Cards</label>
+      <select class="type-select" data-component="Feature/Product Cards" disabled aria-label="Select Feature/Product Cards type">
+        <option value="">Choose type</option>
+        <option>Static cards</option>
+        <option>Interactive or hover-effect cards</option>
+        <option>Flippable or expandable cards</option>
+      </select>
+    </div>
+
+    <!-- Pagination/Infinite Scroll -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Pagination/Infinite Scroll" /> Pagination/Infinite Scroll</label>
+      <select class="type-select" data-component="Pagination/Infinite Scroll" disabled aria-label="Select Pagination/Infinite Scroll type">
+        <option value="">Choose type</option>
+        <option>Numeric pagination</option>
+        <option>Load more button</option>
+        <option>Infinite scroll</option>
+      </select>
+    </div>
+
+    <!-- User Profile/Account Section -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="User Profile/Account Section" /> User Profile/Account Section</label>
+      <select class="type-select" data-component="User Profile/Account Section" disabled aria-label="Select User Profile/Account Section type">
+        <option value="">Choose type</option>
+        <option>Dropdown menu profile</option>
+        <option>Sidebar profile panel</option>
+        <option>Full profile page</option>
+      </select>
+    </div>
+
+    <!-- Analytics and Tracking Scripts -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Analytics and Tracking Scripts" /> Analytics and Tracking Scripts</label>
+      <select class="type-select" data-component="Analytics and Tracking Scripts" disabled aria-label="Select Analytics and Tracking Scripts type">
+        <option value="">Choose type</option>
+        <option>Google Analytics/Tag Manager</option>
+        <option>Heatmaps</option>
+      </select>
+    </div>
+
+    <!-- Accessibility Features -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Accessibility Features" /> Accessibility Features</label>
+      <select class="type-select" data-component="Accessibility Features" disabled aria-label="Select Accessibility Features type">
+        <option value="">Choose type</option>
+        <option>Keyboard navigation aids</option>
+        <option>Screen reader support</option>
+        <option>Contrast toggles</option>
+        <option>Text resize controls</option>
+      </select>
+    </div>
+
+    <!-- SEO Markup -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="SEO Markup" /> SEO Markup</label>
+      <select class="type-select" data-component="SEO Markup" disabled aria-label="Select SEO Markup type">
+        <option value="">Choose type</option>
+        <option>Meta tags</option>
+        <option>Structured data (JSON-LD)</option>
+        <option>Open Graph tags</option>
+      </select>
+    </div>
+
+    <!-- PWA Features -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Progressive Web App (PWA) Features" /> Progressive Web App (PWA) Features</label>
+      <select class="type-select" data-component="Progressive Web App (PWA) Features" disabled aria-label="Select PWA Features type">
+        <option value="">Choose type</option>
+        <option>Service worker caching</option>
+        <option>App manifest configuration</option>
+      </select>
+    </div>
+
+    <!-- Micro-interactions -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Micro-Interactions" /> Micro-Interactions</label>
+      <select class="type-select" data-component="Micro-Interactions" disabled aria-label="Select Micro-Interactions type">
+        <option value="">Choose type</option>
+        <option>Button animations</option>
+        <option>Loading animations</option>
+        <option>Scroll-triggered effects</option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<button id="generateBtn" type="button">Generate Prompt</button>
+<button id="copyBtn" type="button" style="display:none;">Copy Prompt to Clipboard</button>
+
+<div id="result" aria-live="polite">
+  <div id="copyMessage">Copied!</div>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const generalForm = document.getElementById('generalForm');
+  const basicForm = document.getElementById('basicForm');
+  const advancedForm = document.getElementById('advancedForm');
+  const copyMessage = document.getElementById('copyMessage');
+  const selectedItem = document.getElementById('selectedItem');
+  const selectedItemInput = document.getElementById('selectedItemInput');
+
+  // Tabs switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+        document.getElementById(t.getAttribute('aria-controls')).classList.remove('active');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+      tab.focus();
+      clearResult();
+    });
+  });
+
+  // Enable/disable selects when checkbox is toggled
+  function setupListeners(form) {
+    form.querySelectorAll('input[type=checkbox][name=component]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const select = form.querySelector(`select[data-component="${cb.value}"]`);
+        if (cb.checked) {
+          select.disabled = false;
+          if (!select.value) select.selectedIndex = 1;
+          
+          // For general form, implement single selection logic
+          if (form === generalForm) {
+            // Uncheck all other checkboxes in general form
+            generalForm.querySelectorAll('input[type=checkbox][name=component]').forEach(otherCb => {
+              if (otherCb !== cb) {
+                otherCb.checked = false;
+                const otherSelect = generalForm.querySelector(`select[data-component="${otherCb.value}"]`);
+                otherSelect.disabled = true;
+                otherSelect.value = '';
+              }
+            });
+            
+            // Update selected item display
+            updateSelectedItemDisplay(cb.value, select.value);
+          }
+        } else {
+          select.disabled = true;
+          select.value = '';
+          
+          // Hide selected item display if this was the selected item
+          if (form === generalForm) {
+            selectedItem.style.display = 'none';
+          }
+        }
+      });
+    });
+    
+    // Add change listener to selects for general form
+    if (form === generalForm) {
+      form.querySelectorAll('select[data-component]').forEach(select => {
+        select.addEventListener('change', () => {
+          const checkbox = form.querySelector(`input[type=checkbox][value="${select.getAttribute('data-component')}"]`);
+          if (checkbox.checked) {
+            updateSelectedItemDisplay(checkbox.value, select.value);
+          }
+        });
+      });
+    }
+  }
+  
+  // Update selected item display
+  function updateSelectedItemDisplay(category, type) {
+    selectedItemInput.value = type;
+    selectedItem.style.display = 'block';
+  }
+  
+  setupListeners(generalForm);
+  setupListeners(basicForm);
+  setupListeners(advancedForm);
+  
+  // Make selected item input editable when clicked
+  selectedItemInput.addEventListener('click', () => {
+    selectedItemInput.readOnly = false;
+    selectedItemInput.focus();
+  });
+  
+  // When input loses focus, make it readonly again
+  selectedItemInput.addEventListener('blur', () => {
+    selectedItemInput.readOnly = true;
+  });
+
+  // Clear result/output
+  function clearResult() {
+    document.getElementById('result').textContent = '';
+    hideCopyButton();
+    hideCopyMessage();
+  }
+
+  // Show/hide copy button
+  function hideCopyButton() {
+    document.getElementById('copyBtn').style.display = 'none';
+  }
+  function showCopyButton() {
+    document.getElementById('copyBtn').style.display = 'block';
+  }
+
+  // Show temporary "Copied!" message
+  function showCopyMessage() {
+    copyMessage.classList.add('show');
+    setTimeout(() => {
+      copyMessage.classList.remove('show');
+    }, 1500);
+  }
+  function hideCopyMessage() {
+    copyMessage.classList.remove('show');
+  }
+
+  // Generate prompt on button click
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    let selected = [];
+    [generalForm, basicForm, advancedForm].forEach(form => {
+      form.querySelectorAll('input[type=checkbox][name=component]:checked').forEach(cb => {
+        const select = form.querySelector(`select[data-component="${cb.value}"]`);
+        selected.push({component: cb.value, type: select.value || 'default type'});
+      });
+    });
+
+    if (selected.length === 0) {
+      document.getElementById('result').textContent = 'Please select at least one component and its type.';
+      hideCopyButton();
+      return;
+    }
+
+
+    let prompt = 'You are a full-stack web application developer. ';
+    prompt += 'Create a single-page web application that incorporates ALL of the following components into a complete, fully integrated app:';
+
+    selected.forEach(item => {
+      prompt += `- ${item.component} with a ${item.type.toLowerCase()} type.
+`;
+    });
+
+    prompt += 'Include meaningful test data and placeholder content inside the components to illustrate their functionality.';
+    prompt += 'Provide the full HTML, CSS, and JavaScript code combined in one cohesive source file or project structure, ready to run in a modern web browser.';
+    prompt += 'Ensure consistent styling and interactivity across all components.';
+    prompt += 'Do not separate the components as independent snippets; the code must be integrated into a single working app.';
+
+    document.getElementById('result').textContent = prompt;
+    showCopyButton();
+  });
+
+  // Copy prompt and reset selections
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const promptText = document.getElementById('result').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(promptText).then(() => {
+        showCopyMessage();
+        resetSelections();
+        clearResult();
+      }).catch(() => {
+        fallbackCopy();
+      });
+    } else {
+      fallbackCopy();
+    }
+  });
+
+  function fallbackCopy() {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('result'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    try {
+      const success = document.execCommand('copy');
+      if (success) {
+        showCopyMessage();
+        resetSelections();
+        clearResult();
+      }
+    } catch {
+      // silent fail
+    }
+    window.getSelection().removeAllRanges();
+  }
+
+  // Reset all checkboxes and disables selects
+  function resetSelections() {
+    [generalForm, basicForm, advancedForm].forEach(form => {
+      form.querySelectorAll('input[type=checkbox][name=component]').forEach(cb => {
+        cb.checked = false;
+      });
+      form.querySelectorAll('select[data-component]').forEach(sel => {
+        sel.value = '';
+        sel.disabled = true;
+      });
+    });
+    // Hide selected item display and clear input
+    selectedItem.style.display = 'none';
+    selectedItemInput.value = '';
+  }
+
+  // Hamburger menu toggle script
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!expanded));
+    navLinks.classList.toggle('show');
+  });
+</script>
+
+</body>
+</html>

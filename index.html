@@ -310,6 +310,17 @@
 <!-- Basic Components Tab -->
 <div id="basic" class="tab-content" role="tabpanel" aria-labelledby="tab-basic">
   <form id="basicForm" autocomplete="off">
+    <!-- Logo -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Logo" /> Logo</label>
+      <select class="type-select" data-component="Logo" disabled aria-label="Select Logo type">
+        <option value="">Choose type</option>
+        <option>Text-logo</option>
+        <option>Image-logo</option>
+        <option>Combination logo (image + text)</option>
+      </select>
+    </div>
+
     <!-- Header -->
     <div class="component">
       <label><input type="checkbox" name="component" value="Header" /> Header</label>
@@ -328,6 +339,30 @@
       </select>
     </div>
 
+    <!-- Search Bar -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Search Bar" /> Search Bar</label>
+      <select class="type-select" data-component="Search Bar" disabled aria-label="Select Search Bar type">
+        <option value="">Choose type</option>
+        <option>Standard input with button</option>
+        <option>Autocomplete suggestion</option>
+        <option>Filtered search</option>
+      </select>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Hero Section" /> Hero Section</label>
+      <select class="type-select" data-component="Hero Section" disabled aria-label="Select Hero Section type">
+        <option value="">Choose type</option>
+        <option>Static image</option>
+        <option>Video background</option>
+        <option>Carousel slider</option>
+        <option>Animated or interactive hero</option>
+        <option>Fullscreen hero</option>
+      </select>
+    </div>
+
     <!-- Navigation Bar -->
     <div class="component">
       <label><input type="checkbox" name="component" value="Navigation Bar" /> Navigation Bar</label>
@@ -342,29 +377,26 @@
       </select>
     </div>
 
-    <!-- Footer -->
+    <!-- Breadcrumbs -->
     <div class="component">
-      <label><input type="checkbox" name="component" value="Footer" /> Footer</label>
-      <select class="type-select" data-component="Footer" disabled aria-label="Select Footer type">
+      <label><input type="checkbox" name="component" value="Breadcrumbs" /> Breadcrumbs</label>
+      <select class="type-select" data-component="Breadcrumbs" disabled aria-label="Select Breadcrumbs type">
         <option value="">Choose type</option>
-        <option>Simple text footer</option>
-        <option>Multi-column with menus</option>
-        <option>Sticky footer</option>
-        <option>Sitemap footer</option>
-        <option>Extended footer with widgets</option>
+        <option>Text breadcrumb trail</option>
+        <option>Icon-based breadcrumbs</option>
+        <option>Dynamic breadcrumbs</option>
       </select>
     </div>
 
-    <!-- Hero Section -->
+    <!-- Call to Action -->
     <div class="component">
-      <label><input type="checkbox" name="component" value="Hero Section" /> Hero Section</label>
-      <select class="type-select" data-component="Hero Section" disabled aria-label="Select Hero Section type">
+      <label><input type="checkbox" name="component" value="Call to Action (CTA)" /> Call to Action (CTA)</label>
+      <select class="type-select" data-component="Call to Action (CTA)" disabled aria-label="Select CTA type">
         <option value="">Choose type</option>
-        <option>Static image</option>
-        <option>Video background</option>
-        <option>Carousel slider</option>
-        <option>Animated or interactive hero</option>
-        <option>Fullscreen hero</option>
+        <option>Buttons</option>
+        <option>Banners</option>
+        <option>Popups/Modals</option>
+        <option>Inline text links</option>
       </select>
     </div>
 
@@ -392,29 +424,6 @@
       </select>
     </div>
 
-    <!-- Breadcrumbs -->
-    <div class="component">
-      <label><input type="checkbox" name="component" value="Breadcrumbs" /> Breadcrumbs</label>
-      <select class="type-select" data-component="Breadcrumbs" disabled aria-label="Select Breadcrumbs type">
-        <option value="">Choose type</option>
-        <option>Text breadcrumb trail</option>
-        <option>Icon-based breadcrumbs</option>
-        <option>Dynamic breadcrumbs</option>
-      </select>
-    </div>
-
-    <!-- Call to Action -->
-    <div class="component">
-      <label><input type="checkbox" name="component" value="Call to Action (CTA)" /> Call to Action (CTA)</label>
-      <select class="type-select" data-component="Call to Action (CTA)" disabled aria-label="Select CTA type">
-        <option value="">Choose type</option>
-        <option>Buttons</option>
-        <option>Banners</option>
-        <option>Popups/Modals</option>
-        <option>Inline text links</option>
-      </select>
-    </div>
-
     <!-- Sidebar -->
     <div class="component">
       <label><input type="checkbox" name="component" value="Sidebar" /> Sidebar</label>
@@ -423,28 +432,6 @@
         <option>Static sidebar</option>
         <option>Sticky or floating sidebar</option>
         <option>Collapsible sidebar</option>
-      </select>
-    </div>
-
-    <!-- Logo -->
-    <div class="component">
-      <label><input type="checkbox" name="component" value="Logo" /> Logo</label>
-      <select class="type-select" data-component="Logo" disabled aria-label="Select Logo type">
-        <option value="">Choose type</option>
-        <option>Text-logo</option>
-        <option>Image-logo</option>
-        <option>Combination logo (image + text)</option>
-      </select>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="component">
-      <label><input type="checkbox" name="component" value="Search Bar" /> Search Bar</label>
-      <select class="type-select" data-component="Search Bar" disabled aria-label="Select Search Bar type">
-        <option value="">Choose type</option>
-        <option>Standard input with button</option>
-        <option>Autocomplete suggestion</option>
-        <option>Filtered search</option>
       </select>
     </div>
 
@@ -489,6 +476,19 @@
         <option>Text testimonials</option>
         <option>Video testimonials</option>
         <option>Carousel of testimonials</option>
+      </select>
+    </div>
+
+    <!-- Footer -->
+    <div class="component">
+      <label><input type="checkbox" name="component" value="Footer" /> Footer</label>
+      <select class="type-select" data-component="Footer" disabled aria-label="Select Footer type">
+        <option value="">Choose type</option>
+        <option>Simple text footer</option>
+        <option>Multi-column with menus</option>
+        <option>Sticky footer</option>
+        <option>Sitemap footer</option>
+        <option>Extended footer with widgets</option>
       </select>
     </div>
 
@@ -789,7 +789,15 @@
 
 
     let prompt = 'You are a full-stack web application developer. ';
-    prompt += 'Create a single-page web application that incorporates ALL of the following components into a complete, fully integrated app:';
+    prompt += 'Create a single-page web application';
+    
+    // Add the last selected item from general form if it exists
+    const lastSelected = selectedItemInput.value.trim();
+    if (lastSelected && lastSelected !== '') {
+      prompt += ' for ' + lastSelected;
+    }
+    
+    prompt += ' that incorporates ALL of the following components into a complete, fully integrated app:';
 
     selected.forEach(item => {
       prompt += `- ${item.component} with a ${item.type.toLowerCase()} type.
